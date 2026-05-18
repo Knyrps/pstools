@@ -158,7 +158,6 @@ function Go-Repo {
     $RepoPath = Get-RepoPath $RepoName
     if ($RepoPath -and (Test-Path $RepoPath)) {
         Set-Location $RepoPath
-        return [System.IO.DirectoryInfo]$RepoPath
     } elseif (-not $RepoPath) {
         $similar = Find-SimilarRepos $RepoName
         if ($similar.Count -gt 0) {
