@@ -6,10 +6,24 @@ All config lives under `~/.config/pstools/`.
 
 ## Quick Start
 
-One-liner install (run as Administrator):
+**One-liner** (run as Administrator):
 
 ```powershell
 irm https://raw.githubusercontent.com/Knyrps/pstools/main/install.ps1 | iex
+```
+
+**Manual install** (if you don't pipe scripts from the internet):
+
+```powershell
+# 1. Download and inspect the installer
+Invoke-WebRequest https://raw.githubusercontent.com/Knyrps/pstools/main/install.ps1 -OutFile install.ps1
+Get-Content install.ps1   # read it first
+
+# 2. Run it
+.\install.ps1
+
+# 3. Clean up
+Remove-Item install.ps1
 ```
 
 Then open the interactive module installer:
