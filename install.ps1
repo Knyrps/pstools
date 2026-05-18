@@ -6,23 +6,20 @@ $ErrorActionPreference = 'Stop'
 $repo   = 'Knyrps/pstools'
 $module = 'PsTools'
 $branch = 'main'
+$base   = "https://raw.githubusercontent.com/$repo/$branch/modules/$module"
 $target = Join-Path $env:ProgramFiles "WindowsPowerShell\Modules\$module"
 
 Write-Host "Installing PsTools..." -ForegroundColor Cyan
-
-# Fetch file list from GitHub API
-$apiUrl = "https://api.github.com/repos/$repo/contents/modules/$module?ref=$branch"
-$files = Invoke-RestMethod -Uri $apiUrl -Headers @{ 'User-Agent' = 'PsTools-Installer' }
 
 if (-not (Test-Path $target)) {
     New-Item -ItemType Directory -Path $target -Force | Out-Null
 }
 
+$files = @('PsTools.psd1', 'PsTools.psm1')
 foreach ($f in $files) {
-    if ($f.type -ne 'file') { continue }
-    $dest = Join-Path $target $f.name
-    Invoke-WebRequest -Uri $f.download_url -OutFile $dest -UseBasicParsing
-    Write-Host "  $($f.name)" -ForegroundColor DarkGray
+    $dest = Join-Path $target $f
+    Invoke-WebRequest -Uri "$base/$f" -OutFile $dest -UseBasicParsing
+    Write-Host "  $f" -ForegroundColor DarkGray
 }
 
 Write-Host "Installed to $target" -ForegroundColor Green
