@@ -148,16 +148,18 @@ function Get-LevenshteinDistance {
 function Go-Repo {
     <#
     .SYNOPSIS
-    Navigates to the directory of a specified repository and returns the path.
+    Navigates to the directory of a specified repository. Use -PassThru to return the DirectoryInfo object.
     #>
     param (
         [Parameter(Position = 0, Mandatory)]
-        [string]$RepoName
+        [string]$RepoName,
+        [switch]$PassThru
     )
 
     $RepoPath = Get-RepoPath $RepoName
     if ($RepoPath -and (Test-Path $RepoPath)) {
         Set-Location $RepoPath
+        if ($PassThru) { return [System.IO.DirectoryInfo]$RepoPath }
     } elseif (-not $RepoPath) {
         $similar = Find-SimilarRepos $RepoName
         if ($similar.Count -gt 0) {
