@@ -89,12 +89,14 @@ function Repo {
 
 function New-RepoEntry {
     param ([string]$Name, [string]$Path)
-    [PSCustomObject]@{
+    $entry = [PSCustomObject]@{
         PSTypeName = 'Repo.Entry'
         Name       = $Name
         Path       = $Path
         Valid      = (Test-Path $Path)
     }
+    $entry | Add-Member -MemberType ScriptMethod -Name 'ToString' -Value { $this.Path } -Force
+    return $entry
 }
 
 function Find-SimilarRepos {
