@@ -121,5 +121,5 @@ function Invoke-GitBranchPrune {
     }
 }
 
-Set-Alias -Name gbp -Value Invoke-GitBranchPrune -Scope Global
-Export-ModuleMember -Function Invoke-GitBranchPrune -Alias gbp
+Set-Alias -Name gprune -Value Invoke-GitBranchPrune -Scope Global
+Export-ModuleMember -Function Invoke-GitBranchPrune -Alias gprune
