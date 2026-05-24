@@ -187,7 +187,7 @@ function Get-PulsePairs {
     if ($Pct -ge 1000) {
         return @(
             @{ Bar='Red';     Over='DarkRed'; Pct='Red';     Otx='DarkRed' },
-            @{ Bar='DarkRed'; Over='Black';   Pct='DarkRed'; Otx='Black'   }
+            @{ Bar='DarkRed'; Over='DarkRed'; Pct='DarkRed'; Otx='DarkRed'   }
         )
     }
     return @(
