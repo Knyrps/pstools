@@ -48,7 +48,7 @@ function Get-CopilotPremiumUsage {
 
     $entitlement  = [int]$premium.entitlement
     $remaining    = [int]$premium.remaining
-    $includedUsed = $entitlement - $remaining
+    $includedUsed = [math]::Min($entitlement - $remaining, $entitlement)
     $overage      = [int]$premium.overage_count
     $totalUsed    = $includedUsed + $overage
     $resetDisplay = Resolve-ResetDate $response
