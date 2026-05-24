@@ -114,21 +114,31 @@ function Show-CopilotPremiumUsage {
     if ($pct -ge 900) {
         $pairs = Get-PulsePairs $pct
 
-        for ($i = 0; $i -lt 6; $i++) {
-            $p = $pairs[$i % 2]
-            Write-UsageBar $cu $p.Bar $p.Over $p.Pct $p.Otx
-            Start-Sleep -Milliseconds 300
-            [Console]::SetCursorPosition(0, [Console]::CursorTop - 1)
-        }
-
+        # draw initial frame + bottom divider so everything is visible
         Write-UsageBar $cu $colors.Bar $colors.Over $colors.Pct $colors.Otx
         Write-Host ''
+        Write-Host $div -ForegroundColor $colors.Divider
+
+        for ($i = 0; $i -lt 6; $i++) {
+            # rewind over content (2 lines) + bottom divider (1 line)
+            [Console]::SetCursorPosition(0, [Console]::CursorTop - 3)
+            $p = $pairs[$i % 2]
+            Write-UsageBar $cu $p.Bar $p.Over $p.Pct $p.Otx
+            Write-Host ''
+            Write-Host $div -ForegroundColor $colors.Divider
+            Start-Sleep -Milliseconds 300
+        }
+
+        # settle on final state
+        [Console]::SetCursorPosition(0, [Console]::CursorTop - 3)
+        Write-UsageBar $cu $colors.Bar $colors.Over $colors.Pct $colors.Otx
+        Write-Host ''
+        Write-Host $div -ForegroundColor $colors.Divider
     } else {
         Write-UsageBar $cu $colors.Bar $colors.Over $colors.Pct $colors.Otx
         Write-Host ''
+        Write-Host $div -ForegroundColor $colors.Divider
     }
-
-    Write-Host $div -ForegroundColor $colors.Divider
 }
 
 # --- private helpers ---
