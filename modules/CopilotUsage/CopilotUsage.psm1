@@ -84,9 +84,7 @@ function Show-CopilotPremiumUsage {
         Color tiers:
           Cyan       < 100%
           Yellow     100 - 999%
-          Red/DarkRed >= 1000%
-
-        Pulses when usage is at or near 1000%.
+          Red        >= 1000%
     .PARAMETER Token
         Passed through to Get-CopilotPremiumUsage.
     .EXAMPLE
@@ -110,33 +108,9 @@ function Show-CopilotPremiumUsage {
     $colors = Get-TierColors $pct
 
     Write-Host $div -ForegroundColor $colors.Divider
-
-    if ($pct -ge 900) {
-        $pairs = Get-PulsePairs $pct
-
-        # draw initial frame + bottom divider so everything is visible from the start
-        Write-UsageBar $cu $colors.Bar $colors.Over $colors.Pct $colors.Otx
-        Write-Host ''
-        Write-Host $div -ForegroundColor $colors.Divider
-        $endY = [Console]::CursorTop
-
-        for ($i = 0; $i -lt 6; $i++) {
-            # rewind over content only (2 lines), leave bottom divider untouched
-            [Console]::SetCursorPosition(0, $endY - 3)
-            $p = $pairs[$i % 2]
-            Write-UsageBar $cu $p.Bar $p.Over $p.Pct $p.Otx
-            Start-Sleep -Milliseconds 300
-        }
-
-        # settle on final state
-        [Console]::SetCursorPosition(0, $endY - 3)
-        Write-UsageBar $cu $colors.Bar $colors.Over $colors.Pct $colors.Otx
-        [Console]::SetCursorPosition(0, $endY)
-    } else {
-        Write-UsageBar $cu $colors.Bar $colors.Over $colors.Pct $colors.Otx
-        Write-Host ''
-        Write-Host $div -ForegroundColor $colors.Divider
-    }
+    Write-UsageBar $cu $colors.Bar $colors.Over $colors.Pct $colors.Otx
+    Write-Host ''
+    Write-Host $div -ForegroundColor $colors.Divider
 }
 
 # --- private helpers ---
@@ -177,21 +151,6 @@ function Get-TierColors {
         return @{ Bar='Yellow'; Over='Yellow'; Pct='Yellow'; Otx='Yellow'; Divider='DarkYellow' }
     }
     return @{ Bar='Cyan'; Over='Cyan'; Pct='Cyan'; Otx='Cyan'; Divider='DarkCyan' }
-}
-
-function Get-PulsePairs {
-    param([double]$Pct)
-
-    if ($Pct -ge 1000) {
-        return @(
-            @{ Bar='Red';    Over='Red';     Pct='Red';    Otx='Red'      },
-            @{ Bar='Red';    Over='DarkGray'; Pct='Red';   Otx='DarkGray' }
-        )
-    }
-    return @(
-        @{ Bar='Yellow'; Over='Yellow';   Pct='Yellow'; Otx='Yellow'   },
-        @{ Bar='Yellow'; Over='DarkGray'; Pct='Yellow'; Otx='DarkGray' }
-    )
 }
 
 function Write-UsageBar {
