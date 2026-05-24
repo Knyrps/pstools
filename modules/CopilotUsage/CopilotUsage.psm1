@@ -171,7 +171,7 @@ function Get-TierColors {
     param([double]$Pct)
 
     if ($Pct -ge 1000) {
-        return @{ Bar='Red'; Over='Magenta'; Pct='Red'; Otx='Magenta'; Divider='Magenta' }
+        return @{ Bar='Red'; Over='Red'; Pct='Red'; Otx='Red'; Divider='Red' }
     }
     if ($Pct -ge 100) {
         return @{ Bar='Yellow'; Over='Yellow'; Pct='Yellow'; Otx='Yellow'; Divider='DarkYellow' }
@@ -184,13 +184,13 @@ function Get-PulsePairs {
 
     if ($Pct -ge 1000) {
         return @(
-            @{ Bar='Red';     Over='Magenta';  Pct='Red';     Otx='Magenta'  },
-            @{ Bar='Magenta'; Over='DarkGray'; Pct='Magenta'; Otx='DarkGray' }
+            @{ Bar='Red';    Over='Red';     Pct='Red';    Otx='Red'      },
+            @{ Bar='Red';    Over='DarkGray'; Pct='Red';   Otx='DarkGray' }
         )
     }
     return @(
-        @{ Bar='Yellow'; Over='Yellow'; Pct='Yellow'; Otx='Yellow' },
-        @{ Bar='Red';    Over='Red';    Pct='Red';    Otx='Red'    }
+        @{ Bar='Yellow'; Over='Yellow';   Pct='Yellow'; Otx='Yellow'   },
+        @{ Bar='Yellow'; Over='DarkGray'; Pct='Yellow'; Otx='DarkGray' }
     )
 }
 
