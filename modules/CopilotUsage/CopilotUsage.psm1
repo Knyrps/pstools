@@ -114,26 +114,24 @@ function Show-CopilotPremiumUsage {
     if ($pct -ge 900) {
         $pairs = Get-PulsePairs $pct
 
-        # draw initial frame + bottom divider so everything is visible
+        # draw initial frame + bottom divider so everything is visible from the start
         Write-UsageBar $cu $colors.Bar $colors.Over $colors.Pct $colors.Otx
         Write-Host ''
         Write-Host $div -ForegroundColor $colors.Divider
+        $endY = [Console]::CursorTop
 
         for ($i = 0; $i -lt 6; $i++) {
-            # rewind over content (2 lines) + bottom divider (1 line)
-            [Console]::SetCursorPosition(0, [Console]::CursorTop - 3)
+            # rewind over content only (2 lines), leave bottom divider untouched
+            [Console]::SetCursorPosition(0, $endY - 3)
             $p = $pairs[$i % 2]
             Write-UsageBar $cu $p.Bar $p.Over $p.Pct $p.Otx
-            Write-Host ''
-            Write-Host $div -ForegroundColor $colors.Divider
             Start-Sleep -Milliseconds 300
         }
 
         # settle on final state
-        [Console]::SetCursorPosition(0, [Console]::CursorTop - 3)
+        [Console]::SetCursorPosition(0, $endY - 3)
         Write-UsageBar $cu $colors.Bar $colors.Over $colors.Pct $colors.Otx
-        Write-Host ''
-        Write-Host $div -ForegroundColor $colors.Divider
+        [Console]::SetCursorPosition(0, $endY)
     } else {
         Write-UsageBar $cu $colors.Bar $colors.Over $colors.Pct $colors.Otx
         Write-Host ''
@@ -173,7 +171,7 @@ function Get-TierColors {
     param([double]$Pct)
 
     if ($Pct -ge 1000) {
-        return @{ Bar='Red'; Over='DarkRed'; Pct='Red'; Otx='DarkRed'; Divider='DarkRed' }
+        return @{ Bar='Red'; Over='Magenta'; Pct='Red'; Otx='Magenta'; Divider='Magenta' }
     }
     if ($Pct -ge 100) {
         return @{ Bar='Yellow'; Over='Yellow'; Pct='Yellow'; Otx='Yellow'; Divider='DarkYellow' }
@@ -186,8 +184,8 @@ function Get-PulsePairs {
 
     if ($Pct -ge 1000) {
         return @(
-            @{ Bar='Red';     Over='DarkRed'; Pct='Red';     Otx='DarkRed' },
-            @{ Bar='DarkRed'; Over='DarkRed'; Pct='DarkRed'; Otx='DarkRed'   }
+            @{ Bar='Red';     Over='Magenta';  Pct='Red';     Otx='Magenta'  },
+            @{ Bar='Magenta'; Over='DarkGray'; Pct='Magenta'; Otx='DarkGray' }
         )
     }
     return @(
